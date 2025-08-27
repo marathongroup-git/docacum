@@ -1,11 +1,11 @@
 ---
 id: template-rfc
-title: Template — RFC (Request for Change)
+title: Template — RFC (Requerimiento de Cambio)
 slug: /acumatica/change-management/templates/rfc
 sidebar_position: 20
 ---
 
-# RFC — Request for Change
+# RFC — Requerimiento de Cambio
 
 **Título:**  
 **Solicitante (Negocio):**  
