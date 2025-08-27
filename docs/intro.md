@@ -1,6 +1,10 @@
 
+---
+sidebar_position: 1
+---
 
-# Introducción
+
+# - Introducción
 
 Este documento establece el **marco de referencia** para la documentación de **control de versiones** y de las **personalizaciones** realizadas por **Marathon Group** en el **Sistema CRM de Acumatica**, así como en componentes relacionados. Su propósito es ofrecer a usuarios finales, responsables funcionales, equipo de TI y auditores una visión clara y trazable de lo que se ha cambiado, por qué se cambió y cómo se validó.
 
