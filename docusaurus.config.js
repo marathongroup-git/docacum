@@ -10,8 +10,8 @@ import {themes as prismThemes} from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'My Site',
-  tagline: 'Dinosaurs are cool',
+  title: 'Documentación Sistemas',
+  tagline: 'Marathon Group',
   favicon: 'img/favicon.ico',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -20,7 +20,7 @@ const config = {
   },
 
   // Set the production url of your site here
-  
+
   url: 'https://marathongroup-git.github.io', // host base de tu sitio
   baseUrl: '/docacum/',                       // nombre del repo con / inicial y final
   organizationName: 'marathongroup-git',      // tu usuario u organización
@@ -77,7 +77,7 @@ const config = {
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
       navbar: {
-        title: 'My Site',
+        title: 'Documentación Sistemas',
         logo: {
           alt: 'My Site Logo',
           src: 'img/logo.svg',
