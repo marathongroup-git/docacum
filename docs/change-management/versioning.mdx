@@ -1,0 +1,21 @@
+---
+id: versioning
+title: Esquema de Versionado
+slug: /acumatica/change-management/versioning
+sidebar_position: 3
+---
+
+## SemVer + Build de Acumatica
+Usa **SemVer** `MAJOR.MINOR.PATCH[-hotfixN]` + etiqueta de compatibilidad con el **build** objetivo.
+
+**Ejemplo:** `erp-2024r2-1.4.0 (build 24.210.0019)`
+
+### Reglas
+- **MAJOR**: cambios incompatibles (campos eliminados, ruptura en procesos).
+- **MINOR**: nuevas funciones compatibles.
+- **PATCH**: correcciones y hardening.
+- Sufijo **-hotfixN** para correcciones urgentes sobre PROD.
+
+### Matriz de compatibilidad
+Mantén una tabla `customization-compatibility.md` con columnas:
+`Versión Customization | Build Acumatica | Tenants | Fecha Release | Estado`.

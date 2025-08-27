@@ -1,0 +1,29 @@
+---
+id: sample-release-notes
+title: Ejemplo de Notas de Versión
+slug: /acumatica/change-management/sample-release-notes
+sidebar_position: 7
+---
+
+## MFE‑ERP 2024R2 v1.2.0 (build 24.210.0019)
+**Fecha:** 2025‑09‑01  
+**Tenant:** Producción
+
+### Nuevas funciones
+- Validación de tipo de cambio en **release** de AR Invoice con confirmación del usuario.
+- Captura en `UsrObservaciones` del motivo de aceptación.
+
+### Correcciones
+- Mensajes de advertencia localizados.
+
+### Impacto
+- **DAC**: `ARRegisterExt.UsrObservaciones` (string 512).
+- **Procesos**: Override `ARInvoiceEntry.Release` con validaciones previas.
+
+### Riesgos / Backout
+- Riesgo medio: afecta release de AR.  
+- Backout: despublicar ZIP anterior o restaurar snapshot.
+
+### Pruebas
+- UAT con 20 facturas (MXN, USD) con variaciones de fecha y tipo de cambio.
+- Evidencia adjunta en `/evidence/2025-09-01-release/`.

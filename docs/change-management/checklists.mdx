@@ -1,0 +1,22 @@
+---
+id: checklists
+title: Checklists (Previo y Posterior al Release)
+slug: /acumatica/change-management/checklists
+sidebar_position: 5
+---
+
+## Pre‑Release
+- [ ] RFC aprobado
+- [ ] Código revisado (PR)
+- [ ] Pruebas en **QA/UAT** con datos representativos
+- [ ] **Snapshot** de tenant destino
+- [ ] **Export** de Customization ZIP firmado
+- [ ] Plan de **Rollback** probado
+- [ ] Ventana de mantenimiento comunicada
+
+## Post‑Release
+- [ ] Smoke tests: Login, documentos críticos (AR/AP/PO/SO)
+- [ ] Validación de reportes/GIs claves
+- [ ] Monitoreo de errores (PXTrace, Event log)
+- [ ] Actualizar **CHANGELOG**
+- [ ] Cerrar RFC

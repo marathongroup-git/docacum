@@ -1,0 +1,21 @@
+---
+id: process
+title: Proceso End‑to‑End
+slug: /acumatica/change-management/process
+sidebar_position: 2
+---
+
+## Flujo
+1. **RFC** → Registrar solicitud usando la plantilla (ver *Templates/RFC*).
+2. **Diseño** → Solución técnica, alcance, riesgos.
+3. **Dev** → Rama/branch y commits convencionales.
+4. **PR** → Revisión por pares + checklist técnico.
+5. **QA/UAT** → Evidencia de pruebas, casos y resultados.
+6. **Aprobación** → CCB/Owner firma el pase.
+7. **Backups** → **Snapshot** de tenant + export de Customization ZIP.
+8. **Release** → Playbook paso a paso.
+9. **Post‑Release** → Smoke tests + monitoreo + cierre de RFC.
+10. **Changelog** → Actualizar `CHANGELOG.md` y matriz de compatibilidad.
+
+## Artefactos requeridos por fase
+- RFC, Diseño, PR, Evidencias QA, Aprobación, Playbook, Rollback plan, Changelog.

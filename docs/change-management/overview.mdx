@@ -1,0 +1,23 @@
+---
+id: overview
+title: Gobierno de Cambios en Acumatica
+slug: /acumatica/change-management/overview
+sidebar_position: 1
+description: Marco de control de cambios/versionado para la instancia de Acumatica.
+---
+
+## Objetivo
+Definir un proceso claro, auditable y repetible para **solicitar, desarrollar, probar y liberar** cambios en la instancia de **Acumatica** (customizations, reportes, GIs, workflows, parámetros).
+
+## Alcance
+- Proyectos de Customization (ZIP).
+- Código en **C#** (Graph/DAC extensions, eventos, Business Events).
+- UI (ASPX), Report Designer, GI/ARMs.
+- Parametrización y Business Rules.
+
+## Roles
+- **Solicitante (Negocio)**: describe necesidad/impacto.
+- **Dev**: implementa y documenta.
+- **QA**: prueba y valida criterios de aceptación.
+- **Aprobador (Owner/CCB)**: autoriza paso a Producción.
+- **Admin Acumatica**: ejecuta publicación y backout si aplica.

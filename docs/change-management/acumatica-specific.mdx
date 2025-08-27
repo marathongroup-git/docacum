@@ -1,0 +1,26 @@
+---
+id: acumatica-specific
+title: Pasos Específicos en Acumatica
+slug: /acumatica/change-management/acumatica-specific
+sidebar_position: 6
+---
+
+## Snapshots (Backups)
+1. Crear **Snapshot** del tenant de destino (System → Snapshots).
+2. Descargar snapshot o asegurar retención.
+3. Validar restauración en ambiente de prueba.
+
+## Customization Projects
+- Exportar el **ZIP** del proyecto con **todas** las revisiones incluidas que apliquen al release.
+- Documentar: nombre del proyecto, versión, dependencias.
+
+## Publicación
+1. Detener jobs/automatizaciones sensibles si aplica.
+2. Publicar el ZIP en el tenant objetivo.
+3. Verificar logs de publicación.
+4. Ejecutar **smoke tests** predefinidos.
+5. Rehabilitar jobs.
+
+## Rollback
+- Despublicar la revisión o re‑publicar versión anterior.
+- Restaurar **Snapshot** si el cambio afectó datos/estructura.
