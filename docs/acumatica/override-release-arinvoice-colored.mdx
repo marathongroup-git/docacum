@@ -141,7 +141,7 @@ public IEnumerable Release(PXAdapter adapter)
 
 :::danger ❗ Error encontrado
 Se detecta un **defecto de flujo**: el release nativo se invoca **antes** de las validaciones.  
-<span style={{color: 'red', fontWeight: 700}}>Impacto:</span> no es posible **bloquear** el release si el usuario responde **No** o si una validación falla; la excepción llega tarde.
+<span style="color: #d32f2f; font-weight: 700;">Impacto:</span> no es posible <strong>bloquear</strong> el release si el usuario responde <strong>No</strong> o si una validación falla; la excepción llega tarde.
 :::
 
 ---
@@ -267,7 +267,7 @@ public class ARInvoiceEntryExt : PXGraphExtension<ARInvoiceEntry>
 - Requiere campo de observaciones en `ARRegisterExt` o `ARInvoiceExt` (p. ej. `UsrObservaciones` con `[PXDBString]`/`[PXUIField]`)
 
 **Riesgos comunes**  
-- <span style={{color:'red'}}>No bloquear release:</span> ocurre si `Base.Release` se llama antes de validar  
+- <span style="color:#d32f2f">No bloquear release:</span> ocurre si `Base.Release` se llama antes de validar  
 - Campo `UsrObservaciones` no encontrado: ajustar nombre o usar BQL field tipado
 
 **Pruebas recomendadas**  
