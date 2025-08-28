@@ -40,6 +40,10 @@ sidebar_position: 10
   color:#d4d4d4 !important;
   border-bottom:1px solid #333 !important;
 }
+
+/* Clases utilitarias para evitar inline style en MDX */
+.impacto-strong { color:#d32f2f; font-weight:700; }
+.warn-strong { color:#d32f2f; }
 `}</style>
 
 # Override de **Release** en `ARInvoiceEntry` con validaciones previas
@@ -140,7 +144,7 @@ public IEnumerable Release(PXAdapter adapter)
 
 :::danger ❗ Error encontrado
 Se detecta un **defecto de flujo**: el release nativo se invoca **antes** de las validaciones.  
-<span style="color: #d32f2f; font-weight: 700;">Impacto:</span> no es posible <strong>bloquear</strong> el release si el usuario responde <strong>No</strong> o si una validación falla; la excepción llega tarde.
+<span className="impacto-strong">Impacto:</span> no es posible <strong>bloquear</strong> el release si el usuario responde <strong>No</strong> o si una validación falla; la excepción llega tarde.
 :::
 
 ---
@@ -266,7 +270,7 @@ public class ARInvoiceEntryExt : PXGraphExtension<ARInvoiceEntry>
 - Requiere campo de observaciones en `ARRegisterExt` o `ARInvoiceExt` (p. ej. `UsrObservaciones` con `[PXDBString]`/`[PXUIField]`)
 
 **Riesgos comunes**  
-- <span style="color:#d32f2f">No bloquear release:</span> ocurre si `Base.Release` se llama antes de validar  
+- <span className="warn-strong">No bloquear release:</span> ocurre si `Base.Release` se llama antes de validar  
 - Campo `UsrObservaciones` no encontrado: ajustar nombre o usar BQL field tipado
 
 **Pruebas recomendadas**  
