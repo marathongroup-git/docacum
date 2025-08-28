@@ -1,0 +1,251 @@
+
+---
+id: override-release-arinvoice-colored
+title: Override de Release en ARInvoiceEntry con validaciones previas
+slug: /acumatica/override-release-arinvoice-colored
+description: Patrón correcto con PXOverride para validar comisiones, fecha y tipo de cambio antes de liberar en ARInvoiceEntry. Incluye análisis del código original, errores, solución y pruebas.
+sidebar_position: 10
+---
+
+# Override de **Release** en `ARInvoiceEntry` con validaciones previas
+
+:::tip 🎯 Objetivo
+Aplicar validaciones **antes** de ejecutar el proceso nativo de **Release**:
+- Comisiones completas
+- Fecha del documento vs **BusinessDate**
+- Tipo de cambio válido o **confirmado** por el usuario, registrando **observaciones**
+:::
+
+:::note 📝 Observaciones
+Este documento incluye **comentarios de documentación** en el código (prefijo `// DOC:`) para facilitar la **generación automática** de documentación técnica.
+:::
+
+---
+
+## 1) Código original (con resaltado y comentarios)
+
+> Problema principal: se llama a `Base.Release(adapter)` **al inicio** y las validaciones ocurren **después**, por lo que no bloquean la liberación si el usuario cancela.
+
+```csharp title="Release (acción personalizada original)"
+// DOC: Delegate declarado pero no usado con PXOverride en este método
+public delegate IEnumerable ReleaseDelegate(PXAdapter adapter);
+
+[PXUIField(DisplayName = "Release", MapEnableRights = PXCacheRights.Update, MapViewRights = PXCacheRights.Update)]
+[PXProcessButton]
+public IEnumerable Release(PXAdapter adapter)
+{
+    // highlight-next-line
+    IEnumerable rel = Base.Release(adapter); // DOC: ⚠️ Se libera ANTES de validar (long operation)
+    if (CurrentDocument.Current != null)
+    {
+        // highlight-next-line
+        if (CurrentDocument.Current.DocType == "INV") // DOC: Literal; preferible ARDocType.Invoice
+        {
+            // DOC: Validación de comisiones (debe lanzar excepción si falla)
+            ARRegisterExt aRRegisterExt = PXCache<ARRegister>.GetExtension<ARRegisterExt>(CurrentDocument.Current);
+            ValidationSOInvoice.CamposComisiones(aRRegisterExt);
+
+            // DOC: Validación de fecha (se pregunta DESPUÉS de liberar)
+            if (CurrentDocument.Current.DocDate != Base.Accessinfo.BusinessDate)
+            {
+                WebDialogResult pregunta = CurrentDocument.Ask(ActionsMessages.Warning, Errores.fechaincorrecta, MessageButtons.YesNo, MessageIcon.Warning);
+
+                if (pregunta == WebDialogResult.No)
+                {
+                    // DOC: Excepción tardía: la liberación ya pudo haberse ejecutado
+                    throw new PXException("Liberacion cancelada por peticion del usuario: " +
+                        QuerySQL.Vendedor(QuerySQL.ARTran(CurrentDocument.Current.RefNbr).SalesPersonID).SalesPersonCD +
+                        " Favor de revisar el documento antes de liberar");
+                }
+                else
+                {
+                    return rel; // DOC: Simplemente devuelve el resultado del release ya ejecutado
+                }
+            }
+
+            // DOC: Validación de tipo de cambio
+            if (ValidationSOInvoice.EvaluarTipodeCambio(CurrentDocument.Current) != false)
+            {
+                return rel; // DOC: Igual, el release ya ocurrió
+            }
+            else
+            {
+                WebDialogResult question = CurrentDocument.Ask(ActionsMessages.Warning, Errores.errortipocambiofactura, MessageButtons.YesNo, MessageIcon.Warning);
+                if (question == WebDialogResult.No)
+                {
+                    throw new PXException("Liberacion cancelada por peticion del usuario: " +
+                        QuerySQL.Vendedor(QuerySQL.ARTran(CurrentDocument.Current.RefNbr).SalesPersonID).SalesPersonCD +
+                        " Favor de revisar el documento antes de liberar");
+                }
+                else
+                {
+                    // DOC: Se registra observación pero después del release
+                    PXTrace.WriteError("Proceso aceptado por el usuario: " +
+                        QuerySQL.Vendedor(QuerySQL.ARTran(CurrentDocument.Current.RefNbr).SalesPersonID).SalesPersonCD +
+                        " Tipo de cambio del dia: " + ValidationSOInvoice.ObetnerTipoCambioFactura(CurrentDocument.Current, true, false) +
+                        " tipo de cambio de la factura: " + ValidationSOInvoice.ObetnerTipoCambioFactura(CurrentDocument.Current, false, true));
+
+                    // DOC: Asignación por nombre literal, propensa a error tipográfico
+                    CurrentDocument.Cache.SetValueExt(CurrentDocument.Current, "Usrobservaciones",
+                        "Proceso aceptado por el usuario: " +
+                        QuerySQL.Vendedor(QuerySQL.ARTran(CurrentDocument.Current.RefNbr).SalesPersonID).SalesPersonCD +
+                        " Tipo de cambio del dia= " + ValidationSOInvoice.ObetnerTipoCambioFactura(CurrentDocument.Current, true, false) +
+                        " tipo de cambio de la factura: " + ValidationSOInvoice.ObetnerTipoCambioFactura(CurrentDocument.Current, false, true));
+
+                    CurrentDocument.Cache.Update(CurrentDocument.Current);
+                    Base.Persist(); // DOC: Persistencia posterior al release
+                }
+                return rel;
+            }
+        }
+    }
+    return rel;
+}
+```
+
+:::danger ❗ Error encontrado
+Se detecta un **defecto de flujo**: el release nativo se invoca **antes** de las validaciones.  
+<span style={{color: 'red', fontWeight: 700}}>Impacto:</span> no es posible **bloquear** el release si el usuario responde **No** o si una validación falla; la excepción llega tarde.
+:::
+
+---
+
+## 2) Solución — Patrón correcto con **PXOverride** (validando antes)
+
+Se implementa un **override** de la acción nativa `Release` en `ARInvoiceEntry` y se ejecutan las validaciones **antes** del `baseMethod(adapter)`.
+
+```csharp title="ARInvoiceEntryExt.cs — Override de Release (patrón correcto)"
+using PX.Data;
+using PX.Objects.AR;
+using System.Collections;
+
+public class ARInvoiceEntryExt : PXGraphExtension<ARInvoiceEntry>
+{
+    // DOC: Delegate requerido por PXOverride
+    public delegate IEnumerable ReleaseDelegate(PXAdapter adapter);
+
+    // DOC: Override del Release nativo. No agregar PXUIField / PXProcessButton aquí.
+    [PXOverride]
+    public IEnumerable Release(PXAdapter adapter, ReleaseDelegate baseMethod)
+    {
+        // DOC: Guard clause — no documento
+        var doc = Base.Document.Current;
+        if (doc == null)
+            return baseMethod(adapter);
+
+        // DOC: Solo facturas (usar constante del framework)
+        if (doc.DocType != ARDocType.Invoice)
+            return baseMethod(adapter);
+
+        // DOC: (1) Validación de comisiones — debe lanzar excepción si falla
+        var regExt = PXCache<ARRegister>.GetExtension<ARRegisterExt>(doc);
+        ValidationSOInvoice.CamposComisiones(regExt);
+
+        // DOC: (2) Validación de fecha — preguntar ANTES del long operation
+        if (doc.DocDate != Base.Accessinfo.BusinessDate)
+        {
+            var answer = Base.Document.Ask(
+                ActionsMessages.Warning,
+                Errores.fechaincorrecta,
+                MessageButtons.YesNo,
+                MessageIcon.Warning
+            );
+
+            if (answer == WebDialogResult.No)
+                throw new PXException($"Liberación cancelada por petición del usuario: {GetSalespersonCD(doc)}. Favor de revisar el documento antes de liberar");
+        }
+
+        // DOC: (3) Validación de tipo de cambio — confirmar; si No, bloquear
+        if (!ValidationSOInvoice.EvaluarTipodeCambio(doc))
+        {
+            var answer = Base.Document.Ask(
+                ActionsMessages.Warning,
+                Errores.errortipocambiofactura,
+                MessageButtons.YesNo,
+                MessageIcon.Warning
+            );
+
+            if (answer == WebDialogResult.No)
+                throw new PXException($"Liberación cancelada por petición del usuario: {GetSalespersonCD(doc)}. Favor de revisar el documento antes de liberar");
+
+            // DOC: Usuario aceptó -> registrar observaciones ANTES del release
+            var mensaje =
+                $"Proceso aceptado por el usuario: {GetSalespersonCD(doc)} " +
+                $"Tipo de cambio del día= {ValidationSOInvoice.ObetnerTipoCambioFactura(doc, true, false)} " +
+                $"tipo de cambio de la factura= {ValidationSOInvoice.ObetnerTipoCambioFactura(doc, false, true)}";
+
+            PXTrace.WriteInformation(mensaje);
+
+            // DOC: Resolver nombre real del campo en runtime si no hay BQL field
+            var cache = Base.Document.Cache;
+            string fieldName = null;
+            string[] candidates = new[] { "UsrObservaciones", "Usrobservaciones", "usrObservaciones" }; // DOC: Ajustar según Ext
+
+            foreach (var c in candidates)
+            {
+                if (cache.Fields.Contains(c))
+                {
+                    fieldName = c;
+                    break;
+                }
+            }
+
+            if (fieldName != null)
+            {
+                cache.SetValueExt(doc, fieldName, mensaje);
+                Base.Document.Update(doc);
+                Base.Actions.PressSave(); // DOC: Persistir ANTES de liberar para dejar evidencia
+            }
+            else
+            {
+                PXTrace.WriteWarning("No se encontró el campo de observaciones en el DAC/Extensión. Verifica el nombre en tu ARRegisterExt/ARInvoiceExt.");
+            }
+        }
+
+        // highlight-next-line
+        return baseMethod(adapter); // DOC: Long operation — se ejecuta SOLO si todo validó/aceptó
+    }
+
+    // DOC: Helper para obtener el SalespersonCD relacionado
+    private string GetSalespersonCD(ARRegister doc)
+    {
+        // DOC: Se puede migrar a SelectFrom<> para evitar dependencias externas
+        return QuerySQL.Vendedor(QuerySQL.ARTran(doc.RefNbr).SalesPersonID).SalesPersonCD;
+    }
+}
+```
+
+:::success ✅ Por qué esta solución funciona
+- Todas las validaciones y `Ask` se evalúan **antes** del long operation
+- `PXException` **bloquea** la liberación si corresponde
+- Observaciones se **persisten** antes de liberar (evidencia durable)
+- Se preserva el botón nativo y permisos con el patrón de **override**
+:::
+
+---
+
+## 3) Notas, riesgos y pruebas
+
+**Compatibilidad**  
+- Dirigido a **Acumatica 2024 R2 (24.210.0019+)**
+- Requiere campo de observaciones en `ARRegisterExt` o `ARInvoiceExt` (p. ej. `UsrObservaciones` con `[PXDBString]`/`[PXUIField]`)
+
+**Riesgos comunes**  
+- <span style={{color:'red'}}>No bloquear release:</span> ocurre si `Base.Release` se llama antes de validar  
+- Campo `UsrObservaciones` no encontrado: ajustar nombre o usar BQL field tipado
+
+**Pruebas recomendadas**  
+- Fecha ≠ BusinessDate → responder **No**; debe **bloquear**  
+- Tipo de cambio inválido → **No** (bloquear) / **Sí** (guardar observaciones y liberar)  
+- Comisiones faltantes → excepción **antes** de cualquier `Ask`  
+- Documento no `Invoice` → delega al método base sin interferir
+
+---
+
+## 4) Resumen visual
+
+- 🎯 **Objetivo:** validar antes de liberar, con evidencia si se acepta divergencia  
+- ❗ **Error encontrado:** release ejecutado **antes** de validar  
+- ✅ **Solución:** `PXOverride` con validaciones y `Ask` **previos** a `baseMethod`  
+- 📝 **Observaciones:** persistir comentarios del usuario en `UsrObservaciones` antes del release
+
