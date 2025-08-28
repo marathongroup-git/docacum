@@ -1,3 +1,4 @@
+
 ---
 id: override-release-arinvoice-colored
 title: Override de Release en ARInvoiceEntry con validaciones previas
@@ -5,46 +6,6 @@ slug: /acumatica/override-release-arinvoice-colored
 description: Patrón correcto con PXOverride para validar comisiones, fecha y tipo de cambio antes de liberar en ARInvoiceEntry. Incluye análisis del código original, errores, solución y pruebas.
 sidebar_position: 10
 ---
-
-<style>{`
-/* Estilo oscuro tipo VS Dark aplicado SOLAMENTE a esta página */
-:root .markdown pre, 
-:root .markdown code, 
-:root .theme-code-block, 
-:root .markdown pre code {
-  background: #1e1e1e !important;
-  color: #d4d4d4 !important;
-  text-shadow: none !important;
-  font-variant-ligatures: none;
-}
-/* Tokens Prism aproximados al tema VS Dark */
-:root .token.comment { color:#6A9955 !important; }
-:root .token.punctuation { color:#d4d4d4 !important; }
-:root .token.property, :root .token.tag, :root .token.constant, :root .token.symbol, :root .token.deleted { color:#9CDCFE !important; }
-:root .token.boolean, :root .token.number { color:#B5CEA8 !important; }
-:root .token.selector, :root .token.attr-name, :root .token.string, :root .token.char, :root .token.builtin, :root .token.inserted { color:#CE9178 !important; }
-:root .token.keyword, :root .token.atrule, :root .token.attr-value { color:#569CD6 !important; }
-:root .token.function, :root .token.class-name { color:#DCDCAA !important; }
-:root .token.variable, :root .token.important, :root .token.regex { color:#4EC9B0 !important; }
-/* Línea resaltada por magic comment */
-:root .docusaurus-highlight-code-line {
-  background-color: rgba(255,255,255,0.06);
-  display:block;
-  margin:0 -1rem;
-  padding:0 1rem;
-  border-left:3px solid #569CD6;
-}
-/* Header del bloque de código con título (si el tema lo muestra) */
-:root .theme-code-block .theme-code-block-header {
-  background:#252526 !important;
-  color:#d4d4d4 !important;
-  border-bottom:1px solid #333 !important;
-}
-
-/* Clases utilitarias para evitar inline style en MDX */
-.impacto-strong { color:#d32f2f; font-weight:700; }
-.warn-strong { color:#d32f2f; }
-`}</style>
 
 # Override de **Release** en `ARInvoiceEntry` con validaciones previas
 
@@ -144,7 +105,7 @@ public IEnumerable Release(PXAdapter adapter)
 
 :::danger ❗ Error encontrado
 Se detecta un **defecto de flujo**: el release nativo se invoca **antes** de las validaciones.  
-<span className="impacto-strong">Impacto:</span> no es posible <strong>bloquear</strong> el release si el usuario responde <strong>No</strong> o si una validación falla; la excepción llega tarde.
+<span style={{color: 'red', fontWeight: 700}}>Impacto:</span> no es posible **bloquear** el release si el usuario responde **No** o si una validación falla; la excepción llega tarde.
 :::
 
 ---
@@ -270,7 +231,7 @@ public class ARInvoiceEntryExt : PXGraphExtension<ARInvoiceEntry>
 - Requiere campo de observaciones en `ARRegisterExt` o `ARInvoiceExt` (p. ej. `UsrObservaciones` con `[PXDBString]`/`[PXUIField]`)
 
 **Riesgos comunes**  
-- <span className="warn-strong">No bloquear release:</span> ocurre si `Base.Release` se llama antes de validar  
+- <span style={{color:'red'}}>No bloquear release:</span> ocurre si `Base.Release` se llama antes de validar  
 - Campo `UsrObservaciones` no encontrado: ajustar nombre o usar BQL field tipado
 
 **Pruebas recomendadas**  
@@ -287,3 +248,4 @@ public class ARInvoiceEntryExt : PXGraphExtension<ARInvoiceEntry>
 - ❗ **Error encontrado:** release ejecutado **antes** de validar  
 - ✅ **Solución:** `PXOverride` con validaciones y `Ask` **previos** a `baseMethod`  
 - 📝 **Observaciones:** persistir comentarios del usuario en `UsrObservaciones` antes del release
+
