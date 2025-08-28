@@ -7,6 +7,44 @@ description: Patrón correcto con PXOverride para validar comisiones, fecha y ti
 sidebar_position: 10
 ---
 
+import CodeBlock from '@theme/CodeBlock';
+
+<style>
+/* Forzar estilo oscuro tipo VS Code para bloques de código en esta página */
+.theme-code-block, code[class*="language-"], pre[class*="language-"] {
+  background: #1e1e1e !important;
+  color: #d4d4d4 !important;
+  text-shadow: none !important;
+  font-variant-ligatures: none;
+}
+/* Colores de tokens (prism) estilo VS Dark */
+.token.comment, .token.prolog, .token.doctype, .token.cdata { color: #6A9955 !important; }
+.token.punctuation { color: #d4d4d4 !important; }
+.token.property, .token.tag, .token.constant, .token.symbol, .token.deleted { color: #9CDCFE !important; }
+.token.boolean, .token.number { color: #B5CEA8 !important; }
+.token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: #CE9178 !important; }
+.token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string { color: #d4d4d4 !important; }
+.token.atrule, .token.attr-value, .token.keyword { color: #569CD6 !important; }
+.token.function, .token.class-name { color: #DCDCAA !important; }
+.token.regex, .token.important, .token.variable { color: #4EC9B0 !important; }
+.token.bold { font-weight: bold; }
+.token.italic { font-style: italic; }
+/* Línea resaltada (magic comments) */
+.docusaurus-highlight-code-line {
+  background-color: rgba(255,255,255,0.06);
+  display: block;
+  margin: 0 -1rem;
+  padding: 0 1rem;
+  border-left: 3px solid #569CD6;
+}
+/* Título del bloque de código */
+.theme-code-block .theme-code-block-header {
+  background: #252526 !important;
+  color: #d4d4d4 !important;
+  border-bottom: 1px solid #333 !important;
+}
+</style>
+
 # Override de **Release** en `ARInvoiceEntry` con validaciones previas
 
 :::tip 🎯 Objetivo
@@ -26,8 +64,8 @@ Este documento incluye **comentarios de documentación** en el código (prefijo 
 
 > Problema principal: se llama a `Base.Release(adapter)` **al inicio** y las validaciones ocurren **después**, por lo que no bloquean la liberación si el usuario cancela.
 
-```csharp title="Release (acción personalizada original)"
-// DOC: Delegate declarado pero no usado con PXOverride en este método
+<CodeBlock language="csharp" title="Release (acción personalizada original)">
+{`// DOC: Delegate declarado pero no usado con PXOverride en este método
 public delegate IEnumerable ReleaseDelegate(PXAdapter adapter);
 
 [PXUIField(DisplayName = "Release", MapEnableRights = PXCacheRights.Update, MapViewRights = PXCacheRights.Update)]
@@ -100,8 +138,8 @@ public IEnumerable Release(PXAdapter adapter)
         }
     }
     return rel;
-}
-```
+}`}
+</CodeBlock>
 
 :::danger ❗ Error encontrado
 Se detecta un **defecto de flujo**: el release nativo se invoca **antes** de las validaciones.  
@@ -114,8 +152,8 @@ Se detecta un **defecto de flujo**: el release nativo se invoca **antes** de las
 
 Se implementa un **override** de la acción nativa `Release` en `ARInvoiceEntry` y se ejecutan las validaciones **antes** del `baseMethod(adapter)`.
 
-```csharp title="ARInvoiceEntryExt.cs — Override de Release (patrón correcto)"
-using PX.Data;
+<CodeBlock language="csharp" title="ARInvoiceEntryExt.cs — Override de Release (patrón correcto)">
+{`using PX.Data;
 using PX.Objects.AR;
 using System.Collections;
 
@@ -212,8 +250,8 @@ public class ARInvoiceEntryExt : PXGraphExtension<ARInvoiceEntry>
         // DOC: Se puede migrar a SelectFrom<> para evitar dependencias externas
         return QuerySQL.Vendedor(QuerySQL.ARTran(doc.RefNbr).SalesPersonID).SalesPersonCD;
     }
-}
-```
+}`}
+</CodeBlock>
 
 :::success ✅ Por qué esta solución funciona
 - Todas las validaciones y `Ask` se evalúan **antes** del long operation
@@ -248,4 +286,3 @@ public class ARInvoiceEntryExt : PXGraphExtension<ARInvoiceEntry>
 - ❗ **Error encontrado:** release ejecutado **antes** de validar  
 - ✅ **Solución:** `PXOverride` con validaciones y `Ask` **previos** a `baseMethod`  
 - 📝 **Observaciones:** persistir comentarios del usuario en `UsrObservaciones` antes del release
-
