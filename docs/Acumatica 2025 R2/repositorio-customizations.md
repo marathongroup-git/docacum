@@ -14,9 +14,28 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Repositorio GitHub “solo código” para personalizaciones de Acumatica
 
-## Objetivo
+:::info 🧭 Navegación rápida
+- [🎯 Objetivo](#objetivo)
+- [🧩 Contexto inicial](#contexto-inicial)
+- [🛠️ Procedimiento realizado](#procedimiento-realizado-detalle-completo)
+- [🚀 Publicación en GitHub](#4-comandos-ejecutados-para-enlazar-con-github-y-publicar-el-repositorio)
+- [🔁 Sincronización automática](#automatización-creada-para-sincronizar-todo-projects-al-repositorio)
+- [✅ Operación diaria](#operación-diaria-recomendada-confirmación-y-push)
+- [📌 Referencias internas](#referencias-internas-rutas-y-repositorio)
+:::
+
+# 🧩 Repositorio GitHub “solo código” para personalizaciones de Acumatica
+
+## 🎯 Objetivo
+
+:::tip ✅ Checklist de éxito
+- [x] Repo nuevo **solo código** (sin runtime)
+- [x] `.gitignore` para evitar `bin/obj/.vs` y binarios
+- [x] Remote `origin` configurado y `push` a GitHub
+- [x] Sincronización automatizada con **PowerShell + Robocopy**
+- [x] Ejecución por doble clic (`.bat`)
+:::
 
 Crear un **nuevo repositorio** en GitHub que contenga **únicamente el código fuente** de las personalizaciones de Acumatica ubicadas en:
 
@@ -31,7 +50,7 @@ Con esto se buscó:
 
 ---
 
-## Contexto inicial
+## 🧩 Contexto inicial
 
 En VS Code (panel **Source Control**) se detectó una gran cantidad de archivos generados que no deberían versionarse, por ejemplo:
 
@@ -43,8 +62,12 @@ En VS Code (panel **Source Control**) se detectó una gran cantidad de archivos 
 Esto provocaba un repositorio “sucio” con demasiados cambios irrelevantes.
 
 ---
+:::note 💡 Tip de nombres y rutas
+Para documentación y URLs más limpias en Docusaurus, evita espacios en nombres de carpetas cuando sea posible (por ejemplo `acumatica-2025-r2` en lugar de `Acumatica 2025 R2`).
+:::
 
-## Interpretación rápida del panel Source Control (VS Code)
+
+## 🧠 Interpretación rápida del panel Source Control (VS Code)
 
 - **M (Modified)**: archivo modificado vs último commit.
 - **U (Untracked)**: archivo nuevo que Git aún no rastrea.
@@ -54,7 +77,7 @@ El panel **Graph** muestra commits, merges, autores y la rama actual (por ejempl
 
 ---
 
-## Decisión técnica
+## 🧭 Decisión técnica
 
 En lugar de “limpiar” el repositorio original, se decidió crear un repositorio nuevo “solo código” tomando como base únicamente:
 
@@ -62,9 +85,9 @@ En lugar de “limpiar” el repositorio original, se decidió crear un reposito
 
 ---
 
-# Procedimiento realizado (detalle completo)
+# 🛠️ Procedimiento realizado (detalle completo)
 
-## 1) Crear estructura del nuevo repositorio (solo código)
+## 1) 🗂️ Crear estructura del nuevo repositorio (solo código)
 
 ### 1.1 Crear carpeta de trabajo fuera de Program Files
 
@@ -86,7 +109,7 @@ Se copió la carpeta `Projects` desde el sitio de Acumatica hacia el nuevo repos
 
 ---
 
-## 2) Crear `.gitignore` para excluir “basura”
+## 2) 🧹 Crear `.gitignore` para excluir “basura”
 
 Se creó el archivo:
 
@@ -124,7 +147,7 @@ Nota importante: `.gitignore` evita que Git rastree archivos nuevos; si algo ya 
 
 ---
 
-## 3) Confirmar cuenta de GitHub utilizada en VS Code
+## 3) 🔐 Confirmar cuenta de GitHub utilizada en VS Code
 
 En el menú **Accounts** de VS Code se confirmó la autenticación con:
 
@@ -135,7 +158,7 @@ La cuenta relevante para GitHub fue **marathongroup-git**.
 
 ---
 
-## 4) Comandos ejecutados para enlazar con GitHub y publicar el repositorio
+## 4) 🚀 Comandos ejecutados para enlazar con GitHub y publicar el repositorio
 
 Todos estos comandos se ejecutaron dentro de:
 
@@ -182,7 +205,7 @@ Resultado esperado:
 
 ---
 
-## 5) Validación final del estado del repositorio
+## 5) ✅ Validación final del estado del repositorio
 
 ```powershell
 git status
@@ -197,7 +220,11 @@ Con esto se confirmó el repositorio limpio y sincronizado.
 
 ---
 
-# Automatización creada para sincronizar TODO Projects al repositorio
+# 🔁 Automatización creada para sincronizar TODO Projects al repositorio
+
+:::warning ⚠️ Importante sobre Robocopy `/MIR`
+`/MIR` mantiene el destino como **espejo** del origen: si se borra un archivo/carpeta en el origen, Robocopy lo borrará también en el destino. Si NO quieres borrados, cambia `/MIR` por `/E`.
+:::
 
 Para mantener el repo actualizado con lo que cambie en el sitio de Acumatica, se crearon 2 archivos:
 
@@ -206,7 +233,12 @@ Para mantener el repo actualizado con lo que cambie en el sitio de Acumatica, se
 
 ---
 
-## 6) Archivo: `sync-projects.ps1` (PowerShell)
+## 6) 🧾 Archivo: `sync-projects.ps1` (PowerShell)
+
+:::info ℹ️ Interpretación rápida de ExitCode (Robocopy)
+- **0–7**: correcto (puede o no haber copiado archivos)
+- **8 o más**: error real (revisar permisos/rutas/locks)
+:::
 
 **Ruta:**  
 `C:\Repos\AcumaticaCustomizations\sync-projects.ps1`
@@ -314,7 +346,7 @@ Pop-Location
 
 ---
 
-## 7) Archivo: `sync-projects.bat` (doble clic)
+## 7) 🖱️ Archivo: `sync-projects.bat` (doble clic)
 
 **Ruta:**  
 `C:\Repos\AcumaticaCustomizations\sync-projects.bat`
@@ -341,7 +373,13 @@ endlocal
 
 ---
 
-# Operación diaria recomendada (uso del flujo)
+# ✅ Operación diaria recomendada (confirmación y push)
+
+:::tip 🧑‍🔧 Rutina rápida (1 minuto)
+1) Ejecuta `sync-projects.bat`
+2) Revisa `git status`
+3) Ejecuta `git add .`, `git commit ...`, `git push`
+:::
 
 ## 8) Sincronizar Projects → Repo local
 
@@ -373,7 +411,7 @@ git push
 
 ---
 
-# Beneficios obtenidos
+# 🌟 Beneficios obtenidos
 
 - Repositorio “solo código” limpio y auditable.
 - Se evita subir binarios, caches, índices y temporales.
@@ -383,7 +421,7 @@ git push
 
 ---
 
-# Recomendaciones finales
+# 🧰 Recomendaciones finales
 
 - Mantener repos fuera de `C:\Program Files\...` para evitar bloqueos/permisos.
 - Tener presente que `/MIR` (Robocopy) mantiene espejo completo:
@@ -392,7 +430,21 @@ git push
 
 ---
 
-# Referencias internas (rutas y repositorio)
+## 🧯 Troubleshooting (rápido)
+
+:::tip 🧩 No se ven cambios después de sincronizar
+Verifica que estés trabajando en `C:\\Repos\\AcumaticaCustomizations` y que el origen exista. Ejecuta `git status` y confirma que los cambios son de código (no `bin/obj`).
+:::
+
+:::warning 🔒 Permisos/locks en `C:\\Program Files`
+Si Robocopy reporta error por acceso, ejecuta el `.bat` con **Run as administrator** o copia el origen a una ruta fuera de `Program Files` para trabajar.
+:::
+
+:::note 📚 Documento no aparece en Docusaurus
+Si tu sidebar es manual, agrega la ruta del doc en `sidebars.js`. Si es autogenerado, revisa que el archivo esté dentro de `docs/`.
+:::
+
+# 📌 Referencias internas (rutas y repositorio)
 
 - Origen (sitio Acumatica):  
   `C:\Program Files\Acumatica ERP\MarathonDB\App_Data\Projects`
