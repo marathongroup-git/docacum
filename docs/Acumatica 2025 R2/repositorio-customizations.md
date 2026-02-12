@@ -20,14 +20,14 @@ import TabItem from '@theme/TabItem';
 - [🧩 Contexto inicial](#contexto-inicial)
 - [🛠️ Procedimiento realizado](#procedimiento-realizado-detalle-completo)
 - [🚀 Publicación en GitHub](#4-comandos-ejecutados-para-enlazar-con-github-y-publicar-el-repositorio)
-- [🔁 Sincronización automática](#automatización-creada-para-sincronizar-todo-projects-al-repositorio)
-- [✅ Operación diaria](#operación-diaria-recomendada-confirmación-y-push)
+- [🔁 Sincronización automática](#automatizacion-creada-para-sincronizar-todo-projects-al-repositorio)
+- [✅ Operación diaria](#operacion-diaria-recomendada-confirmacion-y-push)
 - [📌 Referencias internas](#referencias-internas-rutas-y-repositorio)
 :::
 
-# 🧩 Repositorio GitHub “solo código” para personalizaciones de Acumatica
+# Repositorio GitHub “solo código” para personalizaciones de Acumatica <small>🧩</small>
 
-## 🎯 Objetivo
+## Objetivo <small>🎯</small>
 
 :::tip ✅ Checklist de éxito
 - [x] Repo nuevo **solo código** (sin runtime)
@@ -50,7 +50,7 @@ Con esto se buscó:
 
 ---
 
-## 🧩 Contexto inicial
+## Contexto inicial <small>🧩</small>
 
 En VS Code (panel **Source Control**) se detectó una gran cantidad de archivos generados que no deberían versionarse, por ejemplo:
 
@@ -67,7 +67,7 @@ Para documentación y URLs más limpias en Docusaurus, evita espacios en nombres
 :::
 
 
-## 🧠 Interpretación rápida del panel Source Control (VS Code)
+## Interpretación rápida del panel Source Control (VS Code) <small>🧠</small>
 
 - **M (Modified)**: archivo modificado vs último commit.
 - **U (Untracked)**: archivo nuevo que Git aún no rastrea.
@@ -77,7 +77,7 @@ El panel **Graph** muestra commits, merges, autores y la rama actual (por ejempl
 
 ---
 
-## 🧭 Decisión técnica
+## Decisión técnica <small>🧭</small>
 
 En lugar de “limpiar” el repositorio original, se decidió crear un repositorio nuevo “solo código” tomando como base únicamente:
 
@@ -85,7 +85,7 @@ En lugar de “limpiar” el repositorio original, se decidió crear un reposito
 
 ---
 
-# 🛠️ Procedimiento realizado (detalle completo)
+# Procedimiento realizado (detalle completo) <small>🛠️</small>
 
 ## 1) 🗂️ Crear estructura del nuevo repositorio (solo código)
 
@@ -220,7 +220,7 @@ Con esto se confirmó el repositorio limpio y sincronizado.
 
 ---
 
-# 🔁 Automatización creada para sincronizar TODO Projects al repositorio
+# Automatización creada para sincronizar TODO Projects al repositorio <small>🔁</small>
 
 :::warning ⚠️ Importante sobre Robocopy `/MIR`
 `/MIR` mantiene el destino como **espejo** del origen: si se borra un archivo/carpeta en el origen, Robocopy lo borrará también en el destino. Si NO quieres borrados, cambia `/MIR` por `/E`.
@@ -373,7 +373,7 @@ endlocal
 
 ---
 
-# ✅ Operación diaria recomendada (confirmación y push)
+# Operación diaria recomendada (confirmación y push) <small>✅</small>
 
 :::tip 🧑‍🔧 Rutina rápida (1 minuto)
 1) Ejecuta `sync-projects.bat`
@@ -411,7 +411,7 @@ git push
 
 ---
 
-# 🌟 Beneficios obtenidos
+# Beneficios obtenidos <small>🌟</small>
 
 - Repositorio “solo código” limpio y auditable.
 - Se evita subir binarios, caches, índices y temporales.
@@ -421,7 +421,7 @@ git push
 
 ---
 
-# 🧰 Recomendaciones finales
+# Recomendaciones finales <small>🧰</small>
 
 - Mantener repos fuera de `C:\Program Files\...` para evitar bloqueos/permisos.
 - Tener presente que `/MIR` (Robocopy) mantiene espejo completo:
@@ -430,7 +430,7 @@ git push
 
 ---
 
-## 🧯 Troubleshooting (rápido)
+## Troubleshooting (rápido) <small>🧯</small>
 
 :::tip 🧩 No se ven cambios después de sincronizar
 Verifica que estés trabajando en `C:\\Repos\\AcumaticaCustomizations` y que el origen exista. Ejecuta `git status` y confirma que los cambios son de código (no `bin/obj`).
@@ -444,7 +444,7 @@ Si Robocopy reporta error por acceso, ejecuta el `.bat` con **Run as administrat
 Si tu sidebar es manual, agrega la ruta del doc en `sidebars.js`. Si es autogenerado, revisa que el archivo esté dentro de `docs/`.
 :::
 
-# 📌 Referencias internas (rutas y repositorio)
+# Referencias internas (rutas y repositorio) <small>📌</small>
 
 - Origen (sitio Acumatica):  
   `C:\Program Files\Acumatica ERP\MarathonDB\App_Data\Projects`
@@ -462,3 +462,4 @@ Si tu sidebar es manual, agrega la ruta del doc en `sidebars.js`. Si es autogene
   `C:\Repos\AcumaticaCustomizations\.gitignore`  
   `C:\Repos\AcumaticaCustomizations\sync-projects.ps1`  
   `C:\Repos\AcumaticaCustomizations\sync-projects.bat`
+  
