@@ -1,7 +1,6 @@
 ---
 id: campo-observaciones-ft
 title: Personalización de Factura de Traslado — Campo Observaciones (CST.FT.30.10.00)
-slug: 
 sidebar_position: 1
 description: Procedimiento para personalizar la pantalla CST.FT.30.10.00 (Factura de traslado) en Acumatica, ampliando el campo Observaciones a multilínea y mayor tamaño, con lineamientos de publicación y consideraciones.
 ---
