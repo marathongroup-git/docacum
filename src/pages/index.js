@@ -15,12 +15,15 @@ function HomepageHeader() {
         <Heading as="h1" className="hero__title">
           {siteConfig.title}
         </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
+        <p className="hero__subtitle">
+          Espacio central para la documentación de proyectos y soluciones tecnológicas
+          creadas para optimizar los procesos y operaciones de Marathon.
+        </p>
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
             to="/docs/intro">
-            Documentación 
+            Ver Documentación 📚
           </Link>
         </div>
       </div>
@@ -36,7 +39,7 @@ export default function Home() {
       description="Description will go into a meta tag in <head />">
       <HomepageHeader />
       <main>
-        <HomepageFeatures />
+        <HomepageFeatures siteConfig={siteConfig} />
       </main>
     </Layout>
   );

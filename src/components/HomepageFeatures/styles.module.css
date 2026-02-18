@@ -6,6 +6,17 @@
 }
 
 .featureSvg {
-  height: 200px;
-  width: 200px;
+  height: 180px;
+  width: 180px;
+  object-fit: contain;
+  border-radius: 18px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10), 0 1.5px 4px rgba(0,0,0,0.08);
+  margin: 0 auto 1rem auto;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  display: block;
+}
+
+.featureSvg:hover {
+  transform: scale(1.04) translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.13), 0 3px 8px rgba(0,0,0,0.10);
 }

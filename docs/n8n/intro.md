@@ -1,11 +1,18 @@
 ---
 sidebar_position: 0
 ---
+
+**Elaboró:** Mauricio Isaac Hernández Hernández  
+**Fecha:** 12 de febrero de 2026  
+**Correo:** mhhernandez@marathongroup.mx  
+
 # Introducción a N8N
 
 Bienvenido a la documentación del proyecto N8N.
 
 Aquí encontrarás los flujos de trabajo y automatizaciones configuradas para optimizar los procesos de Marathon.
+# Reporte técnico
+
 
 ## ¿Por qué elegimos N8N?
 

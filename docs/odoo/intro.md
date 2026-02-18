@@ -1,12 +1,16 @@
 ---
 sidebar_position: 0
 ---
+**Elaboró:** Mauricio Isaac Hernández Hernández  
+**Fecha:** 12 de febrero de 2026  
+**Correo:** mhhernandez@marathongroup.mx  
 
 # Introducción a ODOO
 
 Bienvenido a la documentación del proyecto ODOO.
 
 Aquí encontrarás toda la información relacionada con los módulos y configuraciones de ODOO.
+
 
 ## Plan Odoo: Una Aplicación Gratis (One App Free)
 

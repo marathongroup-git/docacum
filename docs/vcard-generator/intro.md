@@ -1,6 +1,9 @@
 ---
 sidebar_position: 0
 ---
+**Elaboró:** Mauricio Isaac Hernández Hernández  
+**Fecha:** 12 de febrero de 2026  
+**Correo:** mhhernandez@marathongroup.mx  
 
 # Introducción
 

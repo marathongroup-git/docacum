@@ -2,44 +2,46 @@ import clsx from 'clsx';
 import Heading from '@theme/Heading';
 import styles from './styles.module.css';
 
-const FeatureList = [
+
+const FeatureList= [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    title: 'Documentación de Proyectos',
+    image: require('@site/static/img/undraw_docusaurus_mountain.png').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Accede a guías detalladas sobre la implementación y configuración de 
+        proyectos como Odoo, N8N y otras soluciones internas.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: 'Mejora de Procesos',
+    image: require('@site/static/img/undraw_docusaurus_tree.png').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Descubre cómo las herramientas desarrolladas optimizan las operaciones 
+        diarias y automatizan tareas repetitivas en Marathon.
       </>
     ),
   },
   {
-    title: 'Powered by React',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    title: 'Soluciones Escalables',
+    image: require('@site/static/img/undraw_docusaurus_react.png').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Documentación técnica sobre arquitecturas y módulos diseñados para crecer 
+        junto con las necesidades operativas de la empresa.
       </>
     ),
   },
 ];
 
-function Feature({Svg, title, description}) {
+
+function Feature({title, image, description}) {
   return (
     <div className={clsx('col col--4')}>
       <div className="text--center">
-        <Svg className={styles.featureSvg} role="img" />
+        <img src={image} className={styles.featureSvg} role="img" alt={title} />
       </div>
       <div className="text--center padding-horiz--md">
         <Heading as="h3">{title}</Heading>
@@ -49,7 +51,9 @@ function Feature({Svg, title, description}) {
   );
 }
 
-export default function HomepageFeatures() {
+export default function HomepageFeatures({siteConfig}) {
+  // Puedes usar siteConfig aquí si lo necesitas, por ejemplo:
+  // console.log(siteConfig);
   return (
     <section className={styles.features}>
       <div className="container">
