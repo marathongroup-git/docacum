@@ -3,11 +3,11 @@ sidebar_position: 1
 ---
 
 # Introducción al Sistema
-**Elaboró:** Mauricio Isaac Hernández Hernández 
+**Elaboró:** Mauricio Isaac Hernández Hernández
 **Fecha:** 06 de marzo del 2026  
 **Correo:** mhhernandez@marathongroup.mx  
  
-Bienvenido a la documentación del **Sistema de Inventario Marathon Group**. Esta aplicación web fue diseñada para gestionar de manera eficiente los activos industriales, mobiliario y equipos de la empresa, asegurando un control preciso sobre su ubicación, estado y responsable.
+Bienvenido a la documentación del **Sistema de Inventario Marathon Group**. Esta aplicación web fue diseñada para gestionar de manera eficiente los activos mobiliario y equipos de la empresa, asegurando un control preciso sobre su ubicación, estado y responsable.
 
 ## Stack Tecnológico
 
