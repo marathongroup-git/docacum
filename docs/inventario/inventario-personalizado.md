@@ -17,6 +17,8 @@ Cada artículo en el sistema requiere información fundamental para su trazabili
   - **Departamento:** Área específica dentro de la sucursal (ej. *Ventas, Punto Rojo*).
 - **Responsable:** Usuario o empleado específicamente a cargo del cuidado del activo.
 - **Detalles Técnicos:** Marca, modelo, número de serie, tipo/material y color.
+- **Imágenes del Activo:** Se puede adjuntar evidencia visual (fotografías) del artículo, las cuales se optimizan automáticamente y se almacenan de forma segura en un bucket de **Cloudflare R2**.
+- **Tipo de Inventario:** Diferenciación entre mobiliario/equipo y herramientas (`inventory_type`).
 
 ### Etiquetado Inteligente (Códigos QR)
 
@@ -38,6 +40,17 @@ Para facilitar la migración de datos o la carga inicial, el sistema cuenta con 
    - El sistema muestra una previsualización de las primeras filas.
    - Durante la inserción, el sistema procesa los registros en lotes (*batches* de 50) para no sobrepasar los límites operativos de Cloudflare D1.
    - Se omiten automáticamente los identificadores (Códigos de Activo) duplicados y se registran los nuevos de forma eficiente, mostrando al final un resumen de "Insertados" y "Omitidos".
+
+## Módulos de Inventario (Mobiliario vs Herramientas)
+
+El sistema agrupa los activos no en un único repositorio global, sino dividiéndolos en paneles virtuales especializados de acuerdo a su naturaleza:
+1. **Mobiliario e Instalaciones:** Agrupa todo el equipo administrativo, vehículos, tecnología de escritorio y mobiliario de las distintas sucursales.
+2. **Herramientas de Trabajo:** Un entorno y vista completamente independiente dedicada de forma exclusiva a las herramientas operativas.
+
+## Auditoría: Conteo Rápido de Inventario
+
+La plataforma incorpora una herramienta esencial para realizar auditorías de piso: el módulo de **Conteo Rápido**.
+Esta funcionalidad agiliza drásticamente los levantamientos físicos: en lugar de buscar artículo por artículo de forma manual, el operador puede ir alimentando los códigos físicos encontrados (vía teclado o escáner celular). El sistema actualizará ágilmente los hallazgos y facilitará la conciliación inmediata (saber qué sobra, qué falta y qué está correcto).
 
 ## Estados del Activo
 

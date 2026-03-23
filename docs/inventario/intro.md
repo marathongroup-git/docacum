@@ -3,11 +3,12 @@ sidebar_position: 1
 ---
 
 # Introducción al Sistema
+
 **Elaboró:** Mauricio Isaac Hernández Hernández
 **Fecha:** 06 de marzo del 2026  
-**Correo:** mhhernandez@marathongroup.mx  
- 
-Bienvenido a la documentación del **Sistema de Inventario Marathon Group**. Esta aplicación web fue diseñada para gestionar de manera eficiente los activos mobiliario y equipos de la empresa, asegurando un control preciso sobre su ubicación, estado y responsable.
+**Correo:** mhhernandez@marathongroup.mx 
+
+Bienvenido a la documentación del **Sistema de Inventario Marathon Group**. Esta aplicación web fue diseñada para gestionar de manera eficiente los activos industriales, mobiliario y equipos de la empresa, asegurando un control preciso sobre su ubicación, estado y responsable.
 
 ## Stack Tecnológico
 
@@ -26,6 +27,8 @@ El sistema está construido con tecnologías modernas para garantizar un alto re
 - 👥 **Responsables Dedicados:** Vinculación de cada activo a un usuario o empleado responsable de su cuidado.
 - 📱 **Etiquetado Inteligente:** Generación automática de códigos QR para cada artículo, facilitando su identificación rápida desde dispositivos móviles.
 - 📥 **Importación Masiva:** Carga ágil de inventario mediante plantillas de Excel (`.xlsx`, `.xls`) y archivos `.csv`.
+- 🧰 **Gestión de Herramientas:** Panel dedicado exclusivamente a llevar el control del inventario de herramienta técnica y operativa.
+- ⏱️ **Conteo Rápido:** Módulo especializado de auditoría ágil para la conciliación física del inventario de forma simplificada en tiempo real.
 - 📊 **Dashboard Analítico:** Panel de control con métricas en tiempo real y gráficos del estado actual del inventario.
 - 🔐 **Seguridad Avanzada:** Autenticación basada en sesiones y robusto control de acceso basado en roles (RBAC).
 

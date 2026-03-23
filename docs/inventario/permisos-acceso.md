@@ -32,6 +32,14 @@ El control de acceso consta de tres componentes principales:
 - **Administrador (`admin`):** Tiene acceso incondicional a todo el sistema. Puede visualizar el *Dashboard* completo de métricas, manejar inventario de manera irrestricta y crear o eliminar otros usuarios en el panel administrativo (`/c/users/new`).
 - **Usuario (`user`):** Nivel de acceso estándar enfocado en el área operativa. Puede visualizar el inventario y sus detalles, pero ciertas vistas, gráficas y acciones estarán deshabilitadas según sus permisos puntuales.
 
+### Control de Acceso por Paneles
+
+Para una segmentación más granular de la operación, el modelo de datos de usuarios incluye propiedades de acceso explícito (`furniture_access` y `tools_access`), sustituyendo esquemas anteriores más rígidos:
+
+- **Mobiliario e Instalaciones** (`furniture_access`): Define si el empleado puede visualizar o administrar el panel principal de activos fijos de la empresa.
+- **Herramientas** (`tools_access`): Habilita el entorno independiente dedicado al control de herramientas de trabajo.
+
+Los administradores tienen acceso global garantizado a todos los paneles disponibles, mientras que los usuarios restringidos serán redirigidos automáticamente al panel adecuado según los permisos asignados en su cuenta.
 ## Mecanismos de Protección
 
 Las acciones críticas y las vistas confidenciales están protegidas en dos capas de la aplicación:
